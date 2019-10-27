@@ -24,7 +24,7 @@ public class Movement : MonoBehaviour
 
     void Jump()
     {
-        if (Input.GetButtonDown("Jump") && Grounded == true)
+        if (Input.GetButtonDown("Jump") && Grounded)
         {
             player.velocity = Vector2.up * jumpSpeed;
         }

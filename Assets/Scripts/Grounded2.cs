@@ -5,6 +5,7 @@ using UnityEngine;
 public class Grounded2 : MonoBehaviour
 {
     GameObject Player;
+
     void Start()
     {
         Player = gameObject.transform.parent.gameObject;
