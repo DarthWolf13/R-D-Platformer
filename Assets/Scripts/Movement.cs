@@ -6,10 +6,13 @@ public class Movement : MonoBehaviour
 {
     public float moveSpeed = 5f;
     public float jumpSpeed = 5f;
+
     public bool Grounded = false;
-    void Start()
+    Rigidbody2D player;
+
+    void Awake()
     {
-        
+        player = GetComponent<Rigidbody2D>();
     }
 
     void Update()
@@ -21,9 +24,9 @@ public class Movement : MonoBehaviour
 
     void Jump()
     {
-        if (Input.GetButtonDown("Jump") && Grounded == true)
+        if (Input.GetButtonDown("Jump") && Grounded)
         {
-            gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector2(0f, jumpSpeed), ForceMode2D.Impulse);
+            player.velocity = Vector2.up * jumpSpeed;
         }
     }
 }
