@@ -4,19 +4,19 @@ using UnityEngine;
 
 public class Move2 : MonoBehaviour
 {
-    [SerializeField, Range(0, 5)]
     public float moveSpeed;
-    public float jumpSpeed = 20f;
+    public float maxMoveSpeed = 7f;
+    public float jumpSpeed = 40f;
 
-    public float fallMod = 2.5f;
+    public float fallMod = 5f;
     public float hopMod = 2f;
 
     public float earlyJumpTime = 0.2f;
-    public float landJumpTime;
+    private float landJumpTime;
 
     public bool Grounded = false;
     public float lateJumpTime = 0.05f;
-    public float fallJumpTime;
+    private float fallJumpTime;
 
     Rigidbody2D player;
 
@@ -39,6 +39,8 @@ public class Move2 : MonoBehaviour
 
         Move();
         Jump();
+
+        transform.position += movement * Time.deltaTime * moveSpeed;
     }
 
     void Move()
@@ -46,9 +48,8 @@ public class Move2 : MonoBehaviour
         bool left = Input.GetKey("a");
         bool right = Input.GetKey("d");
         
-        if (left)
+        if (left && Grounded)
         {
-            //Debug.Log("left");
             if (moveSpeed == 0f)
             {
                 movement = leftMovement;
@@ -62,13 +63,12 @@ public class Move2 : MonoBehaviour
 
             if (movement == leftMovement)
             {
-                moveSpeed += 0.5f;
+                moveSpeed += 0.2f;
             }
         }
 
-        if (right)
+        if (right && Grounded)
         {
-            //Debug.Log("right");
             if (moveSpeed == 0f)
             {
                 movement = rightMovement;
@@ -82,39 +82,17 @@ public class Move2 : MonoBehaviour
 
             if (movement == rightMovement)
             {
-                moveSpeed += 0.5f;
+                moveSpeed += 0.2f;
             }
         }
-        //if (left)
-        //{
-        //    movement = new Vector3(-1f, 0f, 0f);
-        //    if (moveSpeed > 0)
-        //    {
 
-        //    }
-        //}
-
-        //if (right)
-        //{
-        //    movement = new Vector3(1f, 0f, 0f);
-        //}
-
-        //if (left || right)
-        //{
-        //    if (moveSpeed == 0)
-        //    {
-        //        moveSpeed += 0.5f;
-        //    }
-        //}
-
-        if (!left && !right)
+        if (!left && !right && Grounded)
         {
-            //Debug.Log("none");
             moveSpeed -= 0.05f;
         }
 
-        moveSpeed = Mathf.Clamp(moveSpeed, 0, 5);
-        transform.position += movement * Time.deltaTime * moveSpeed;
+        moveSpeed = Mathf.Clamp(moveSpeed, 0, 7);
+        
     }
 
     void Jump()
