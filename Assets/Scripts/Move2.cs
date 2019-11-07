@@ -5,7 +5,7 @@ using UnityEngine;
 public class Move2 : MonoBehaviour
 {
     [SerializeField, Range(0, 5)]
-    public float moveSpeed = 5f;
+    public float moveSpeed;
     public float jumpSpeed = 20f;
 
     public float fallMod = 2.5f;
@@ -21,10 +21,12 @@ public class Move2 : MonoBehaviour
     Rigidbody2D player;
 
     Vector3 movement;
+    Vector3 leftMovement = new Vector3(-1f, 0f, 0f);
+    Vector3 rightMovement = new Vector3(1f, 0f, 0f);
 
     void Awake()
     {
-        player = GetComponent<Rigidbody2D>();
+        player = GetComponent<Rigidbody2D>();   
     }
 
     void Update()
@@ -35,30 +37,83 @@ public class Move2 : MonoBehaviour
             fallJumpTime = lateJumpTime;
         }
 
+        Move();
         Jump();
+    }
 
-        if (Input.GetKeyDown("a"))
+    void Move()
+    {
+        bool left = Input.GetKey("a");
+        bool right = Input.GetKey("d");
+        
+        if (left)
         {
-            movement = new Vector3(-1f, 0f, 0f);
+            //Debug.Log("left");
+            if (moveSpeed == 0f)
+            {
+                movement = leftMovement;
+
+            }
+            else if (movement == rightMovement)
+            {
+                moveSpeed -= 0.05f;
+            }
+            
+
+            if (movement == leftMovement)
+            {
+                moveSpeed += 0.5f;
+            }
         }
 
-        if (Input.GetKeyDown("d"))
+        if (right)
         {
-            movement = new Vector3(1f, 0f, 0f);
+            //Debug.Log("right");
+            if (moveSpeed == 0f)
+            {
+                movement = rightMovement;
+
+            }
+            else if (movement == leftMovement)
+            {
+                moveSpeed -= 0.05f;
+            }
+            
+
+            if (movement == rightMovement)
+            {
+                moveSpeed += 0.5f;
+            }
+        }
+        //if (left)
+        //{
+        //    movement = new Vector3(-1f, 0f, 0f);
+        //    if (moveSpeed > 0)
+        //    {
+
+        //    }
+        //}
+
+        //if (right)
+        //{
+        //    movement = new Vector3(1f, 0f, 0f);
+        //}
+
+        //if (left || right)
+        //{
+        //    if (moveSpeed == 0)
+        //    {
+        //        moveSpeed += 0.5f;
+        //    }
+        //}
+
+        if (!left && !right)
+        {
+            //Debug.Log("none");
+            moveSpeed -= 0.05f;
         }
 
-        if (Input.GetKeyDown("a") || Input.GetKeyDown("d"))
-        {
-            moveSpeed = 5f;
-        }
-
-        if (!Input.GetKey("a") && !Input.GetKey("d"))
-        {
-            moveSpeed -= 0.2f;
-            moveSpeed = Mathf.Clamp(moveSpeed, 0, 5);
-            //Debug.Log("slow");
-        }
-
+        moveSpeed = Mathf.Clamp(moveSpeed, 0, 5);
         transform.position += movement * Time.deltaTime * moveSpeed;
     }
 
