@@ -15,6 +15,7 @@ public class Move2 : MonoBehaviour
     private float landJumpTime;
 
     public bool Grounded = false;
+    public bool Wall = false;
     public float lateJumpTime = 0.05f;
     private float fallJumpTime;
 
@@ -29,7 +30,7 @@ public class Move2 : MonoBehaviour
         player = GetComponent<Rigidbody2D>();   
     }
 
-    void Update()
+    void FixedUpdate()
     {
         fallJumpTime -= Time.deltaTime;
         if (Grounded)
@@ -89,6 +90,12 @@ public class Move2 : MonoBehaviour
         if (!left && !right && Grounded)
         {
             moveSpeed -= 0.05f;
+        }
+
+        if (Wall)
+        {
+            moveSpeed = 0f;
+            Wall = false;
         }
 
         moveSpeed = Mathf.Clamp(moveSpeed, 0, 7);
