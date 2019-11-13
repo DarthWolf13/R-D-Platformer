@@ -22,6 +22,10 @@ public class Grounded2 : MonoBehaviour
         {
             Player.GetComponent<Move2>().Grounded = true;
         }
+        else if (collision.collider.tag == "Wall")
+        {
+            Player.GetComponent<Move2>().Wall = true;
+        }
     }
 
     private void OnCollisionExit2D(Collision2D collision)
@@ -29,6 +33,10 @@ public class Grounded2 : MonoBehaviour
         if (collision.collider.tag == "Ground")
         {
             Player.GetComponent<Move2>().Grounded = false;
+        }
+        else if (collision.collider.tag == "Wall")
+        {
+            Player.GetComponent<Move2>().Wall = false;
         }
     }
 }
